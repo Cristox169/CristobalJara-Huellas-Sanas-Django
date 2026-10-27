@@ -1,0 +1,13 @@
+{% extends 'agenda/base.html' %}
+{% block title %}Agenda diaria · Huellas Sanas{% endblock %}
+{% block content %}
+<section class="hero"><div><div class="eyebrow">PANEL DE RECEPCIÓN</div><h1>Un buen día empieza <em>con cuidado.</em></h1><p>Organiza las consultas y acompaña cada historia.</p></div><div class="hero-icon">🐾</div></section>
+<section class="date-row"><div><span class="eyebrow">AGENDA DEL DÍA</span><h2>{{ fecha|date:"l, j \d\e F \d\e Y"|capfirst }}</h2></div><form class="date-picker" method="get"><label for="fecha">Ver otra fecha</label><input id="fecha" type="date" name="fecha" value="{{ fecha|date:'Y-m-d' }}"><button class="button button-dark" type="submit">Ver agenda</button></form></section>
+<section class="stats"><article class="stat-card"><span>Consultas del día</span><strong>{{ total|stringformat:"02d" }}</strong><small>citas programadas</small></article><article class="stat-card"><span>Por atender</span><strong>{{ pendientes|stringformat:"02d" }}</strong><small>pendientes</small></article><article class="stat-card"><span>Atendidas</span><strong>{{ atendidas|stringformat:"02d" }}</strong><small>completadas hoy</small></article><article class="stat-card stat-highlight"><span>Pacientes registrados</span><strong>{{ mascotas_total|stringformat:"02d" }}</strong><small>en nuestra comunidad</small></article></section>
+<section class="list-heading"><div><div class="eyebrow">CONTROL DE CITAS</div><h2>Próximas consultas</h2></div><a class="button button-green" href="{% url 'nueva_cita' %}">＋ Agendar cita</a></section>
+<div class="table-wrap"><table><thead><tr><th>HORA</th><th>PACIENTE</th><th>RESPONSABLE</th><th>MOTIVO</th><th>ESTADO</th></tr></thead><tbody>
+{% for cita in citas %}<tr><td class="time">{{ cita.hora|time:"H:i" }}</td><td><div class="pet-name">{{ cita.mascota.nombre }}</div><div class="subtext">{{ cita.mascota.especie }}{% if cita.mascota.raza %} · {{ cita.mascota.raza }}{% endif %}</div></td><td>{{ cita.mascota.nombre_dueno }}</td><td>{{ cita.motivo_consulta }}</td><td><span class="status status-{{ cita.estado }}">{{ cita.get_estado_display }}</span></td></tr>
+{% empty %}<tr><td colspan="5"><div class="empty"><span>☀</span><strong>Agenda despejada</strong><p>No hay citas para esta fecha. Puedes agendar una nueva consulta.</p><a href="{% url 'nueva_cita' %}">Crear una cita →</a></div></td></tr>{% endfor %}
+</tbody></table></div>
+<div class="hint">Las citas y sus estados también se pueden administrar desde el <a href="{% url 'admin:index' %}">panel de Django Admin</a>.</div>
+{% endblock %}

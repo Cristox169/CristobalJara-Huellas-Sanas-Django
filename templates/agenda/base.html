@@ -1,0 +1,18 @@
+{% load static %}<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f7f2"><title>{% block title %}Huellas Sanas{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'agenda/styles.css' %}">
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="{% url 'agenda' %}"><span class="brand-mark">✳</span><span>Huellas <b>Sanas</b><small>CLÍNICA VETERINARIA</small></span></a>
+    <nav><a href="{% url 'agenda' %}">Agenda</a><a href="{% url 'nueva_mascota' %}">Registrar paciente</a><a href="{% url 'nueva_cita' %}">Nueva cita</a><a class="admin-link" href="{% url 'admin:index' %}">Administración ↗</a></nav>
+  </header>
+  <main class="shell">
+    {% if messages %}<div class="messages">{% for message in messages %}<div class="message">{{ message }}</div>{% endfor %}</div>{% endif %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer>Huellas Sanas <span>·</span> Agenda de atención veterinaria</footer>
+</body>
+</html>
